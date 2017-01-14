@@ -1,28 +1,30 @@
 resources:
-  - name: git-repo
+  - name: source-code
     type: git
     source:
       uri: https://github.com/joelbinn/concourse-maven-proj.git
       branch: master
-  - name: time
-    type: time
-    source:
-      interval: 60s
 
 jobs:
 - name: build
   plan:
   - aggregate:
-    - get: git-repo
+    - get: source-code
       trigger: true
-    - get: time
-  - task: maven-version
+  - task: maven-version-12
     config:
       platform: linux
       image_resource:
+        type: docker-image
         source:
           repository: java
           tag: '8'
-        run:
-          path: build.sh
-          args: ["-v"]
+      inputs:
+        - name: source-code
+      run:
+        #path: echo
+        #args: ["hej"]
+        #path: ./mvnw
+        #args: [-v]
+        path: source-code/build.sh
+        args: ['source-code']
