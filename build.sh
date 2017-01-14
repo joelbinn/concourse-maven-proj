@@ -1,2 +1,3 @@
 echo "banan"
-$1/mvnw clean install
+cd $1
+./mvnw clean install
