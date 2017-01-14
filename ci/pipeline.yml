@@ -1,0 +1,20 @@
+resources:
+- name: every-1m
+  type: time
+  source: {interval: 1m}
+
+jobs:
+- name: build
+  plan:
+  - get: every-1m
+    trigger: true
+  - task: maven
+    config:
+      platform: linux
+      image_resource:
+        source:
+          repository: java
+          tag: '8'
+        run:
+          path: ./mvnw
+          args: ["-v"]
